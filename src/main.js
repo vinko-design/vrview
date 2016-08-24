@@ -138,21 +138,14 @@ function onVideoLoad() {
     // Autoplay the video on desktop.
     videoElement.play();
   } else {
-    // Tell user to tap to start.
-    showError('Tap to start video', 'Play');
-    document.body.addEventListener('touchend', onVideoTap);
+    // Hide loading indicator.
+    loadIndicator.hide();
+    // Autoplay the video on desktop.
+    videoElement.play();
   }
 
   // Prevent onVideoLoad from firing multiple times.
   videoElement.removeEventListener('canplaythrough', onVideoLoad);
-}
-
-function onVideoTap() {
-  hideError();
-  videoElement.play();
-
-  // Prevent multiple play() calls on the video element.
-  document.body.removeEventListener('touchend', onVideoTap);
 }
 
 function onRenderLoad() {
