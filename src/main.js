@@ -111,7 +111,7 @@ function onSceneLoad(scene) {
       // Load the video element.
       videoElement = document.createElement('video');
       videoElement.src = scene.video;
-      videoElement.loop = false;
+      videoElement.loop = true;
       videoElement.setAttribute('crossorigin', 'anonymous');
       videoElement.addEventListener('canplaythrough', onVideoLoad);
       videoElement.addEventListener('error', onVideoError);
@@ -138,14 +138,21 @@ function onVideoLoad() {
     // Autoplay the video on desktop.
     videoElement.play();
   } else {
-    // Hide loading indicator.
-    loadIndicator.hide();
-    // Autoplay the video on desktop.
-    videoElement.play();
+    // Tell user to tap to start.
+    showError('Tap to start video', 'Play');
+    document.body.addEventListener('touchend', onVideoTap);
   }
 
   // Prevent onVideoLoad from firing multiple times.
   videoElement.removeEventListener('canplaythrough', onVideoLoad);
+}
+
+function onVideoTap() {
+  hideError();
+  videoElement.play();
+
+  // Prevent multiple play() calls on the video element.
+  document.body.removeEventListener('touchend', onVideoTap);
 }
 
 function onRenderLoad() {
